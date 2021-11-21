@@ -1,0 +1,5 @@
+ver 0.1:  
++ Parse Sentence seem good. 
++ Classification now can classify 4 type:  question, exclamatory, normal, simple and compound.
+ver 0.2: ==> Update Classification: 
+                Simple and compound: Compound Func will can classify "and", "or" between compound and simple.
