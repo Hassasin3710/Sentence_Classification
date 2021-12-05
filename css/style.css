@@ -1,1 +1,51 @@
 /* Some shit here */
+.content {
+    text-align: center;
+}
+.bigNumber {
+    font-size: xx-large;
+}
+.colContent {
+    background-color: aquamarine;
+    border-radius: 5px;
+    border: 5px solid #bff3f3 ;
+}
+.line-bottom {
+    border-bottom: 5px solid #bff3f3 ;
+}
+.block {
+    display: block;
+}
+.input-block {
+    margin: 1% 7%;
+    width: 20%;
+}
+.insideContent p {
+    text-decoration: underline;
+    font-weight: bold;
+}
+/* Expand */
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+    background-color: aquamarine;
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+  }
+  
+  /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+  .active, .collapsible:hover {
+    text-decoration: underline;
+  }
+  
+  /* Style the collapsible content. Note: hidden by default */
+  .insideContent {
+    padding: 0 18px;
+    background-color: aquamarine;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    text-align: left;
+  }

@@ -12,10 +12,66 @@
     <script src="./js/jquery-3.4.1.js"></script>
     <script src="./js/bootstrap.min.js"></script>
     <script src="./js/script.js"></script>
-    <div>
-        <label for="text">Put input in here:</label>
-        <input type="text" id="input">
-        <button onclick="classification()">Start!</button>
+
+    <div class="input-block">
+    <label for="input">Input:</label>
+        <div class="input-group">  
+            <input type="text" class="form-control" id="input">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" onclick="classification()">Start!</button>
+            </span>
+        </div>
     </div>
+    <div id="content" class="content container">
+        <div class="row">
+            <div class="col-sm-3 colContent">
+                <div id="sentence">
+                    <p>Has <br><span class="bigNumber">0</span><br> sentences!</p>
+                    <button type="button" class="collapsible">Expand</button>
+                    <div class="insideContent">
+                        <p></p> 
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 colContent">
+                <div id="simple" class="line-bottom">
+                    <p>Has <br><span class="bigNumber">0</span><br> sentences is simple sentences!</p>
+                    <button type="button" class="collapsible">Expand</button>
+                    <div class="insideContent">
+                        <p></p> 
+                    </div>
+                </div>
+                <div id="compound">
+                    <p>Has <br><span class="bigNumber">0</span><br> sentences is compound sentences!</p>
+                    <button type="button" class="collapsible">Expand</button>
+                    <div class="insideContent">
+                        <p></p> 
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 colContent">
+                <div id="question" class="line-bottom"><p>Has <br><span class="bigNumber">0</span><br> sentences is question sentences!</p>
+                    <button type="button" class="collapsible">Expand</button>
+                    <div class="insideContent">
+                        <p></p> 
+                    </div>
+                </div>
+                <div id="exclamatory"><p>Has <br><span  class="bigNumber">0</span><br> sentences is exclamatory sentences!</p>
+                    <button type="button" class="collapsible">Expand</button>
+                    <div class="insideContent">
+                        <p></p> 
+                    </div>
+                </div>
+            </div>
+            <div id="normal" class="col-sm-3 colContent">
+                <p>Has <br><span class="bigNumber">0</span><br> sentences is normal sentences!</p>
+                <button type="button" class="collapsible">Expand</button>
+                <div class="insideContent">
+                    <p></p> 
+                </div>
+            </div>
+        </div>
+    </div> 
+    
 </body>
 </html>
