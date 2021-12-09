@@ -1,5 +1,5 @@
+var verbs=[], searchRslt;
 $(function(){
-    console.log("Ready!");
     // ---- Expand ---- //
     var coll = document.getElementsByClassName("collapsible");
     for (var i = 0; i < coll.length; i++) {
@@ -13,32 +13,83 @@ $(function(){
         }
         });
     }
+
+    fetch ("https://raw.githubusercontent.com/monolithpl/verb.forms.dictionary/master/json/verbs-all.json")
+        .then(function (resp) {
+            return resp.json();
+        })
+        .then(function (data) {
+            verbs=data;
+            //console.log(data);
+        })
+    
+    console.log("Ready!");
 })
 
 // ---- Classification ---- //
-function classQuestion(stnc) {
-    if (stnc.indexOf("?")>=0) return true;
-    return false
-}
-function classExclamatory(stnc) {
-    if (stnc.indexOf("!")>=0) return true;
-    return false
-}
-function classNormal(stnc) {
-    if (!classQuestion(stnc)&&!classExclamatory(stnc)) return true;
-    return false
-}
-function classSimple(stnc) {
-    if (!classCompound(stnc)) return true;
-    return false
-}
-function classCompound(stnc) {
-    if (stnc.indexOf("and")>=0||
-        stnc.indexOf("or")>=0||
-        stnc.indexOf(",")>=0) return true;
-    return false
+function matchExact(s,ve) {
+    const v = new RegExp("\\b"+ve+"\\b");
+    if (s.search(v)!=-1)  return true;
+    return false;
 }
 
+function searchVerbs(stnc) {
+    let rslt=0;
+    for (var i=0;i<verbs.length;i++){
+        for (var j=0;j<verbs[i].length;j++){
+            if (matchExact(stnc,verbs[i][j])) {
+                rslt+=1;
+                console.log(verbs[i][j]);
+            }
+        }
+    }
+    return rslt;
+}
+
+function classNormal(stnc) {
+    if (!classSimple(stnc) &&
+    !classCompound(stnc) &&
+    !classComplex(stnc) &&
+    !classCompComp(stnc)) return true;
+    return false;
+}
+function classSimple(stnc) {
+    if (stnc.indexOf("and") < 0 &&
+        stnc.indexOf("or") < 0 &&
+        stnc.indexOf(",") < 0) return true;
+        // var a = new RegExp("\\b"+verbs[2][2]+"\\b");
+        // console.log("You're abashed me".search(a));
+    if (searchRslt<=1) return true;
+    return false;
+}
+function classCompound(stnc) {
+    let fanboys = ['for', 'and', 'nor', 'but', 'or', 'yet', 'so', ','];
+    for (let i = 0; i < fanboys.length; i++) {
+        if (matchExact(stnc,fanboys[i])) {
+            if (searchRslt>=2) return true;
+        }
+    }
+    return false;
+}
+function classComplex(stnc) {
+    let cmplx = ['after', 'although', 'as', 'as if', 'as long as', 'as much as', 'as soon as', 'as though', 'because', 'before', 'even if', 'even though', 'if', 'in case', 'once', 'since', 'so that', 'that', 'though', 'unless', 'until', 'when', 'whenever', 'whereas', 'where', 'wherever', 'while'];
+    for (let i = 0; i < cmplx.length; i++) {
+        if (stnc.indexOf(cmplx[i])) {
+            if (searchRslt>=2) return true;
+        }
+    }
+    return false;
+}
+//Compound-complex
+function classCompComp(stnc) {
+    let cmplx = ['after', 'although', 'as', 'as if', 'as long as', 'as much as', 'as soon as', 'as though', 'because', 'before', 'even if', 'even though', 'if', 'in case', 'once', 'since', 'so that', 'that', 'though', 'unless', 'until', 'when', 'whenever', 'whereas', 'where', 'wherever', 'while'];
+    for (let i = 0; i < cmplx.length; i++) {
+        if (stnc.indexOf(cmplx[i])) {
+            if (searchRslt>=3) return true;
+        }
+    }
+    return false;
+}
 // ---- Parse Sentence ---- //
 function parseSentence(s){
     if (s==null) return ;
@@ -61,20 +112,22 @@ function parseSentence(s){
 function classification(){
     let s = document.getElementById("input").value;
     var data = parseSentence(s);
-    var q = [],e = [],nrm = [],smp = [],cpd = [];
+    var cpx = [],cmp = [],nrm = [],smp = [],cpd = [];
     if (data.length>0){
         for (var i=0;i<data.length;i++){
+            searchRslt = searchVerbs(data[i]);
+            console.log(searchRslt);
             if (classSimple(data[i])) smp.push(data[i]);
             if (classCompound(data[i])) cpd.push(data[i]);  
-            if (classQuestion(data[i])) q.push(data[i]);
-            if (classExclamatory(data[i])) e.push(data[i]);
+            if (classComplex(data[i])) cpx.push(data[i]);
+            if (classCompComp(data[i])) cmp.push(data[i]);
             if (classNormal(data[i])) nrm.push(data[i]);
         }
         pushContent("sentence",data);
         pushContent("simple",smp);
         pushContent("compound", cpd);
-        pushContent("question", q);
-        pushContent("exclamatory",e);
+        pushContent("complex", cpx);
+        pushContent("compcomp",cmp);
         pushContent("normal", nrm);
     }
     // alert("Has: "+q+" Question.\n"+e+" Exclamatory.\n"+nrm+" Normal Sentence.\n"+smp+" Simple Sentence.\n"+cpd+" Compound Sentence.\n");
